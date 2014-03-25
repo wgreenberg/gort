@@ -1,2 +1,6 @@
+run.sh
+test.sh
 node_modules
+github_auth_token.txt
+wolfram_api_appid.txt
 .DS_Store*
