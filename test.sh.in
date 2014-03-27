@@ -1,0 +1,25 @@
+#/bin/sh
+
+# connection stuff
+export HUBOT_IRC_SERVER=
+export HUBOT_IRC_PORT=
+export HUBOT_IRC_PASSWORD=
+export HUBOT_IRC_USESSL=1 
+export HUBOT_IRC_SERVER_FAKE_SSL=1 
+export HUBOT_IRC_ROOMS=
+export HUBOT_IRC_NICK=
+export HUBOT_IRC_UNFLOOD="true"
+
+# github stuff
+# token got through docs at https://github.com/iangreenleaf/githubot
+export HUBOT_GITHUB_TOKEN=$(cat github_auth_token.txt)
+export HUBOT_GITHUB_USER=
+
+# wolfram stuff
+export HUBOT_WOLFRAM_APPID=$(cat wolfram_api_appid.txt)
+export WOLFRAM_APPID=$(cat wolfram_api_appid.txt)
+
+export IRC_NAME=
+export PORT=1337
+
+bin/hubot --name $IRC_NAME
