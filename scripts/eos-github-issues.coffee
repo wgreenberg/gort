@@ -40,7 +40,6 @@ LABEL_KEYWORDS = [
   'review',
   'ready',
   'qa',
-  'merged',
   'complete'
 ]
 
@@ -94,7 +93,7 @@ infer_repo = (message, match) ->
 module.exports = (robot) ->
   github = require("githubot")(robot)
 
-  issue_regexp = /((\S*|^)?#(\d+))/g
+  issue_regexp = /(([\w-]*|^)?#(\d+))/g
 
   githubIgnoreUsers = process.env.HUBOT_GITHUB_ISSUE_LINK_IGNORE_USERS
   if githubIgnoreUsers == undefined
@@ -111,6 +110,7 @@ module.exports = (robot) ->
       
       issue_title = ""
       bot_github_repo = github.qualified_repo(infer_repo(message, match))
+      console.log 'repo:', bot_github_repo
       base_url = process.env.HUBOT_GITHUB_API || 'https://api.github.com'
 
       issue_message_generator = (repo, number) ->
