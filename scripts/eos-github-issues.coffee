@@ -43,6 +43,22 @@ LABEL_KEYWORDS = [
   'complete'
 ]
 
+LABEL_COLORS = {
+  'Complete': 'green',
+  'Backlog': 'grey',
+  'Blocked': 'maroon',
+  'Revise': 'red',
+  'Review ready': 'purple',
+  'Review': 'purple',
+  'QA': 'lightblue',
+  'Dev': 'blue',
+  'Dev ready': 'aqua'
+}
+
+get_label_color = (label) ->
+  if label in Object.keys(LABEL_COLORS)
+    return LABEL_COLORS[label]
+  return null
 
 get_issue_status = (issue_obj) ->
   label_objs = issue_obj.labels
@@ -58,10 +74,11 @@ get_issue_status = (issue_obj) ->
   if status_labels.length > 0
     status = status_labels[0]
     if match = prefix_regex.exec(status)
-      return match[1]
-    return status_labels[0]
+      return [match[1], get_label_color(match[1])]
+    return [status, get_label_color(status)]
   else
-    return issue_obj.state.toUpperCase()
+    default_label = issue_obj.state.toUpperCase()
+    return [default_label, get_label_color(default_label)]
 
 get_alias = (message) ->
   first_alias_occurance = message.length
@@ -92,12 +109,15 @@ infer_repo = (message, match) ->
 
 module.exports = (robot) ->
   github = require("githubot")(robot)
+  colors = require("irc-colors")
 
   issue_regexp = /(([\w-]*|^)?#(\d+))/g
 
   githubIgnoreUsers = process.env.HUBOT_GITHUB_ISSUE_LINK_IGNORE_USERS
   if githubIgnoreUsers == undefined
     githubIgnoreUsers = "github|hubot"
+
+  adminUser = process.env.HUBOT_AUTH_ADMIN || "your favorite sysadmin"
 
   robot.hear /.*((\S*|^)?#(\d+)).*/, (msg) ->
     return if msg.message.user.name.match(new RegExp(githubIgnoreUsers, "gi"))
@@ -110,7 +130,6 @@ module.exports = (robot) ->
       
       issue_title = ""
       bot_github_repo = github.qualified_repo(infer_repo(message, match))
-      console.log 'repo:', bot_github_repo
       base_url = process.env.HUBOT_GITHUB_API || 'https://api.github.com'
 
       issue_message_generator = (repo, number) ->
@@ -121,7 +140,19 @@ module.exports = (robot) ->
           else
             url = base_url.replace /\/api\/v3/, ''
 
-          status = get_issue_status(issue_obj)
-          msg.send "[#{status}] #{repo}##{number}: #{issue_title} #{url}/#{repo}/issues/#{number}"
+          try
+            [status, color] = get_issue_status(issue_obj)
+
+            if color
+              status_str = colors.bold[color]("[#{status}]")
+            else
+              status_str = colors.bold("[#{status}]")
+            issue_title_str = issue_title
+            repo_str = "#{repo}##{number}"
+            url_str = colors.underline("#{url}/#{repo}/issues/#{number}")
+            msg.send "#{status_str} #{repo_str}: #{issue_title_str} #{url_str}"
+          catch e
+            console.log e
+            msg.send "ohnoes, something broke! bug #{adminUser} about this"
       
       github.get "#{base_url}/repos/#{bot_github_repo}/issues/" + issue_number, issue_message_generator(bot_github_repo, issue_number)
