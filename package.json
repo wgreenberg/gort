@@ -29,7 +29,14 @@
     "githubot": "^0.5.0",
     "sandbox": "^0.8.4",
     "wolfram": "^0.3.0",
-    "irc-colors": "^1.0.3"
+    "irc-colors": "^1.0.3",
+    "hubot-codinglove": "0.1.2",
+    "hubot-tell": "*",
+    "hubot-motivate": ">= 0.0.0",
+    "hubot-pugme": ">= 0.0.0",
+    "hubot-shipit": ">= 0.0.0",
+    "hubot-google-hangouts": ">= 0.0.0",
+
   },
   "engines": {
     "node": ">= 0.8.x",
