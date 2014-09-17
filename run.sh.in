@@ -18,7 +18,7 @@ export HUBOT_GITHUB_USER=
 # wolfram stuff
 export HUBOT_WOLFRAM_APPID=$(cat wolfram_api_appid.txt)
 export WOLFRAM_APPID=$(cat wolfram_api_appid.txt)
-
+export HUBOT_GOOGLE_HANGOUTS_DOMAIN = "endlessm.com"
 export IRC_NAME=
 
 bin/hubot -a irc --name $IRC_NAME
