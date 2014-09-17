@@ -1,5 +1,8 @@
 #/bin/sh
 
+SCRIPTS_DIR=$(dirname $(readlink -f $0))
+cd $SCRIPTS_DIR
+
 # connection stuff
 export HUBOT_IRC_SERVER=
 export HUBOT_IRC_PORT=
@@ -18,7 +21,10 @@ export HUBOT_GITHUB_USER=
 # wolfram stuff
 export HUBOT_WOLFRAM_APPID=$(cat wolfram_api_appid.txt)
 export WOLFRAM_APPID=$(cat wolfram_api_appid.txt)
-export HUBOT_GOOGLE_HANGOUTS_DOMAIN = "endlessm.com"
+
+# hangouts stuff
+export HUBOT_GOOGLE_HANGOUTS_DOMAIN=
+
 export IRC_NAME=
 
 bin/hubot -a irc --name $IRC_NAME
