@@ -35,8 +35,7 @@
     "hubot-motivate": ">= 0.0.0",
     "hubot-pugme": ">= 0.0.0",
     "hubot-shipit": ">= 0.0.0",
-    "hubot-google-hangouts": ">= 0.0.0",
-
+    "hubot-google-hangouts": ">= 0.0.0"
   },
   "engines": {
     "node": ">= 0.8.x",
