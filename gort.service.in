@@ -1,0 +1,12 @@
+[Service]
+ExecStart=
+Restart=always
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=gort
+User=srv-gort
+Group=srv-gort
+Environment=NODE_ENV=production
+
+[Install]
+WantedBy=multi-user.target
